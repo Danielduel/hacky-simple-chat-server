@@ -1,0 +1,70 @@
+<script>
+  (async () => {
+    const ws = new WebSocket("ws://localhost:25123");
+    const waitFor = (event, once = true) => new Promise(resolve => ws.addEventListener(event, resolve, { once }));
+    const send = (event) => ws.send(JSON.stringify(event));
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        console.log(data);
+        switch (data.kind) {
+          case "hello": document.getElementById("heading")
+            .innerText = `Messages (${data.data.name}):`;
+            break;
+          case "getMessages": document.getElementById("messages")
+            .innerText = data.data.messages.map(msg => `${msg.author}: ${msg.text}`).join("\n");
+            break;
+          case "newMessage": document.getElementById("messages")
+            .innerText += `${data.data.author}: ${data.data.text} \n`;
+            break;
+        }
+      } catch (err) {
+        console.error(err)
+      } 
+    }
+
+    await waitFor("open");
+    console.log("Open");
+
+    // Test invalid events:
+    send("hello");
+    send({ kind: "asdasd", data: { name: "test" } });
+
+    console.log("Sending valid data...")
+    const helloDataP = waitFor("message");
+    send({ kind: "hello", data: { name: "test user" } });
+    console.log("Sent...")
+    console.log("hello", await helloDataP);
+
+    const getMessagesDataP = waitFor("message");
+    send({ kind: "getMessages" });
+    console.log("Sent...")
+    console.log("getMessages", await getMessagesDataP);
+
+    send({ kind: "newMessage", data: { author: "test user", text: "test message" } });
+
+    window.sendMessage = function () {
+      send({
+        kind: "newMessage",
+        data: {
+          author: "test user",
+          text: document.getElementById("input").value
+        }
+      });
+      document.getElementById("input").value = "";
+    }
+  })()
+</script>
+
+<h4 id="heading">Messages:</h4>
+<div id="messages"></div>
+<div>
+  <input id="input" type="text"></input>
+  <button type="button" onclick="sendMessage()">Send</button>
+</div>
+
+<style>
+  body { background: gray; display: flex; place-items: center; flex-direction: column; }
+  h4 { padding: 2rem; }
+  input, button { padding: 0.25rem 2rem; margin-top: 2rem; }
+</style>
