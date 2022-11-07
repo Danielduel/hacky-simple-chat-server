@@ -4,7 +4,6 @@ Dependencies:
 
 It installs own version of TypeScript
 
-Install using `yarn`
-Start by `yarn start`
+Install using `yarn`, then run `yarn start` to start.
 
-In `testclient` there is hacky `client.html`
+There is a hacky client in `testclient`, just open `client.html` in browser (after `yarn start`).
