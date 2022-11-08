@@ -4,17 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node ./src/main.ts"
+    "start": "ts-node ./src/main.ts",
+    "dev": "ts-node-dev ./src/main.ts",
+    "client": "serve ./testclient"
   },
   "dependencies": {
     "chalk": "4",
-    "fp-ts": "^2.13.1",
-    "ts-node": "^10.9.1",
-    "ts-pattern": "^4.0.5",
-    "typescript": "^4.8.4",
-    "ws": "^8.11.0"
+    "fp-ts": "2.13.1",
+    "ts-node": "10.9.1",
+    "ts-pattern": "4.0.5",
+    "typescript": "4.8.4",
+    "ws": "8.11.0"
   },
   "devDependencies": {
-    "@types/ws": "^8.5.3"
+    "@types/ws": "8.5.3",
+    "serve": "^14.1.1",
+    "ts-node-dev": "2.0.0"
   }
 }
