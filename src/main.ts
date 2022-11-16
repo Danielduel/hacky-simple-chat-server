@@ -1,20 +1,26 @@
 import chalk from "chalk";
 import WebSocket from "ws";
+import express from "express";
+
 import ClientManager from "./Client/ClientManager";
 import { nbsp } from "./utils";
 
+const HOST = process.env.HOST || "localhost";
+const PORT = process.env.PORT || "25123";
 const clientManager = new ClientManager();
 
-const opts: WebSocket.ServerOptions = {
-  port: +(process.env.PORT || 25123),
-  host: process.env.HOST || undefined
-};
+const server = express()
+  .use((req, res) => res.sendFile("testclient/client.html", { root: __dirname }))
+  .listen(+PORT, HOST, () => console.log(chalk.bgBlack.cyan`${nbsp}(Express) Listening on port ${PORT}${nbsp}`));
+
+const opts: WebSocket.ServerOptions = { server };
+
 const WSServer = new WebSocket.Server(opts, () => {
-  console.log(chalk.bgGray.blue`${nbsp}Listening on port ${opts.port}${nbsp}`);
+  console.log(chalk.bgBlack.cyan`${nbsp}(WS) Listening on port ${PORT}${nbsp}`);
 });
 
 WSServer.on("connection", (socket) => {
-  console.log(chalk.bgGray.blue`${nbsp}New connection${nbsp}`);
+  console.log(chalk.bgBlack.cyan`${nbsp}New connection${nbsp}`);
   const client = clientManager
     .registerClient(socket)
     .registerEvents();

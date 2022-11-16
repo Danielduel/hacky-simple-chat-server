@@ -68,7 +68,7 @@ export default class Client {
 
   private log (message: string) {
     console.log(
-      chalk.bgGray.blue`${nbsp}${this.index}${
+      chalk.bgBlack.cyan`${nbsp}${this.index}${
         matchO(
           () => "",
           (name) => `(${name})`
