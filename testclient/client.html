@@ -1,6 +1,7 @@
 <script>
   (async () => {
-    const ws = new WebSocket("ws://localhost:25123");
+    // const ws = new WebSocket("ws://localhost:25123");
+    const ws = new WebSocket("wss://intive.herokuapp.com/");
     const waitFor = (event, once = true) => new Promise(resolve => ws.addEventListener(event, resolve, { once }));
     const send = (event) => ws.send(JSON.stringify(event));
     ws.onmessage = (event) => {

@@ -7,3 +7,5 @@ RUN yarn
 
 ADD src src
 ADD testclient testclient
+
+ENTRYPOINT [ "yarn", "start" ]

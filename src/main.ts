@@ -7,6 +7,10 @@ import { nbsp } from "./utils";
 
 const HOST = process.env.HOST || "localhost";
 const PORT = process.env.PORT || "25123";
+
+console.log("HOST: ", HOST);
+console.log("PORT: ", PORT);
+
 const clientManager = new ClientManager();
 
 const server = express()
