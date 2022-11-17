@@ -64,6 +64,48 @@ Server reacts only to stringified messages (`JSON.stringify(eventData)`)
 }
 ```
 
+`User` type
+* Note: Nothing is validated
+* Fields
+  * name
+    * type: string
+    * description: name of the user (can be an empty string)
+
+`GetUsers` event
+* Kind `getUsers`
+* Data
+Data is null for this event, server will ignore data if sent
+* Example
+```json6
+{
+  kind: "getUsers",
+  data: null
+}
+```
+* Effects
+  * Server will reply with event
+    * Kind `getUsers`
+    * Data
+      * users
+        * type: array of `User`
+        * description: all users that are stored serverside
+    * Example
+```json6
+{
+  kind: "getUsers",
+  data: {
+    users: [
+      {
+        name: "Daniel"
+      },
+      {
+        name: "Maciej"
+      }
+    ]
+  }
+}
+```
+
 `RawMessage` type
 * Note: Nothing is validated, author and text are never checked if they are actual authors
 * Fields

@@ -16,6 +16,7 @@ export default class ClientEventHandler {
   handle (client: Client, clientEvent: ClientSide.Union) {
     match([clientEvent, client])
       .with([{ kind: ClientEventKind.hello }, P._], this.onMessageHello)
+      .with([{ kind: ClientEventKind.getUsers }, P._], this.onMessageGetUsers)
       .with([{ kind: ClientEventKind.newMessage }, P._], this.onMessageNewMessage)
       .with([{ kind: ClientEventKind.getMessages }, P._], this.onMessageGetMessages)
       .with(P._, () => void 0)
@@ -25,6 +26,10 @@ export default class ClientEventHandler {
   private onMessageHello: Handler<ClientSide.Hello> = ([event, client]) => {
     client.name = some(event.data.name);
     client.send(event);
+  };
+
+  private onMessageGetUsers: Handler<ClientSide.GetUsers> = ([, client]) => {
+    client.send(this.manager.toServerSideGetUsers());
   };
 
   private onMessageNewMessage: Handler<ClientSide.NewMessage> = ([event]) => {

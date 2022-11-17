@@ -1,7 +1,7 @@
 <script>
   (async () => {
-    // const ws = new WebSocket("ws://localhost:25123");
-    const ws = new WebSocket("wss://intive.herokuapp.com/");
+    const ws = new WebSocket("ws://localhost:25123");
+    // const ws = new WebSocket("wss://intive.herokuapp.com/");
     const waitFor = (event, once = true) => new Promise(resolve => ws.addEventListener(event, resolve, { once }));
     const send = (event) => ws.send(JSON.stringify(event));
     ws.onmessage = (event) => {
@@ -43,6 +43,11 @@
     console.log("getMessages", await getMessagesDataP);
 
     send({ kind: "newMessage", data: { author: "test user", text: "test message" } });
+    await waitFor("message");
+
+    const getUsersP = waitFor("message");
+    send({ kind: "getUsers", data: null });
+    console.log("getUsers", await getUsersP);
 
     window.sendMessage = function () {
       send({

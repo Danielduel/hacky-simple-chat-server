@@ -1,7 +1,9 @@
 import type { WebSocket } from "ws";
+import { match as matchO } from "fp-ts/lib/Option";
+import { pipe } from "fp-ts/lib/function";
 
 import Client from "./Client";
-import { ClientSide, ServerSide } from "./ClientEvent";
+import { ClientEventKind, ClientSide, ServerSide } from "./ClientEvent";
 import ClientEventHandler from "./ClientEventHandler";
 import MessageManager from "../Message/MessageManager";
 
@@ -24,4 +26,17 @@ export default class ClientManager {
 
   handleClientEvent = (client: Client, clientEvent: ClientSide.Union) =>
     this.clientEventHandler.handle(client, clientEvent);
+
+  toServerSideGetUsers = (): ServerSide.GetUsers => {
+    return {
+      kind: ClientEventKind.getUsers,
+      data: {
+        users: this.clients.flatMap((client) => {
+          return {
+            name: pipe(client.name, matchO(() => "", name => name))
+          }
+        })
+      }
+    };
+  }
 }

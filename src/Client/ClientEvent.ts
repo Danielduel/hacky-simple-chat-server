@@ -1,9 +1,11 @@
 import RawMessage from "../Message/RawMessage";
+import { User } from "./User";
 
 export enum ClientEventKind {
   "hello" = "hello",
   "newMessage" = "newMessage",
   "getMessages" = "getMessages",
+  "getUsers" = "getUsers",
 }
 
 export type ClientEvent = {
@@ -11,7 +13,7 @@ export type ClientEvent = {
 }
 
 export namespace ClientSide {
-  export type Union = Hello | NewMessage | GetMessages;
+  export type Union = Hello | NewMessage | GetMessages | GetUsers;
 
   export type Hello = ClientEvent & {
     kind: ClientEventKind.hello;
@@ -32,10 +34,15 @@ export namespace ClientSide {
     kind: ClientEventKind.getMessages;
     data: null;
   }
+
+  export type GetUsers = ClientEvent & {
+    kind: ClientEventKind.getUsers;
+    data: null;
+  }
 };
 
 export namespace ServerSide {
-  export type Union = Hello | NewMessage | GetMessages;
+  export type Union = Hello | NewMessage | GetMessages | GetUsers;
 
   export type Hello = ClientSide.Hello; // echo
 
@@ -45,6 +52,13 @@ export namespace ServerSide {
     kind: ClientEventKind.getMessages;
     data: {
       messages: RawMessage[];
+    };
+  }
+
+  export type GetUsers = ClientEvent & {
+    kind: ClientEventKind.getUsers;
+    data: {
+      users: User[];
     };
   }
 };
