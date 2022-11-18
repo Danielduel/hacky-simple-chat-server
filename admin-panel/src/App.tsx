@@ -6,7 +6,7 @@ const API_URL =
   location.hostname === "localhost" ||
   location.hostname === "127.0.0.1"
   ? "http://localhost:25123"
-  : "/";
+  : ".";
 
 const getMessages: QueryFunction<{ author: string; text: string; }[]> = async () => {
   const response = await fetch(`${API_URL}/getMessages`);
