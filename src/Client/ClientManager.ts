@@ -6,6 +6,7 @@ import Client from "./Client";
 import { ClientEventKind, ClientSide, ServerSide } from "./ClientEvent";
 import ClientEventHandler from "./ClientEventHandler";
 import MessageManager from "../Message/MessageManager";
+import { User } from "./User";
 
 export default class ClientManager {
   private connectionIndex: number = 0;
@@ -38,5 +39,13 @@ export default class ClientManager {
         })
       }
     };
+  }
+
+  getUsers = (): User[] => {
+    return this.clients.flatMap((client) => {
+      return {
+        name: pipe(client.name, matchO(() => "", name => name))
+      }
+    })
   }
 }

@@ -3,6 +3,7 @@ declare global {
     interface ProcessEnv {
       PORT?: string;
       HOST?: string;
+      ADMIN_PANEL_PASS?: string;
     }
   }
 }
